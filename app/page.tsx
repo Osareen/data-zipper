@@ -25,6 +25,10 @@ interface RawMapping {
   loanAmount: string;
   estimatedValue: string;
   loanType: string;
+  custom1: string;
+  custom2: string;
+  custom3: string;
+  custom4: string;
 }
 
 interface PhoneMapping {
@@ -57,6 +61,10 @@ interface ProcessedRow {
   "Loan Bal": string;
   "Estimated": string;
   "Loan Type": string;
+  "Custom 1": string;
+  "Custom 2": string;
+  "Custom 3": string;
+  "Custom 4": string;
   "Sep": string;
   "sms_v1.xml": string;
 }
@@ -94,7 +102,8 @@ export default function Home() {
   const [rawMapping, setRawMapping] = useState<RawMapping>({
     firstName: '', lastName: '', fullAddress: '', street: '', city: '', state: '', zip: '', recordedDate: '', filterColumn: '',
     houseNumber: '', streetSuffix: '', unitType: '', unitId: '',
-    dob: '', fico: '', loanAmount: '', estimatedValue: '', loanType: ''
+    dob: '', fico: '', loanAmount: '', estimatedValue: '', loanType: '',
+    custom1: '', custom2: '', custom3: '', custom4: ''
   });
 
   const [phoneMapping, setPhoneMapping] = useState<PhoneMapping>({
@@ -339,6 +348,11 @@ export default function Home() {
         const estimated = getValue(row, rawMapping.estimatedValue) || '';
         const loanType = getValue(row, rawMapping.loanType) || '';
         
+        const custom1 = getValue(row, rawMapping.custom1);
+        const custom2 = getValue(row, rawMapping.custom2);
+        const custom3 = getValue(row, rawMapping.custom3);
+        const custom4 = getValue(row, rawMapping.custom4);
+        
         const formattedPhone = formatPhone(bestMobile);
         
         return {
@@ -356,6 +370,10 @@ export default function Home() {
           "Loan Bal": loanBal,
           "Estimated": estimated,
           "Loan Type": loanType,
+          "Custom 1": custom1,
+          "Custom 2": custom2,
+          "Custom 3": custom3,
+          "Custom 4": custom4,
           "Sep": "",
           "sms_v1.xml": ""
         };
@@ -608,6 +626,38 @@ export default function Home() {
                       </select>
                     </div>
                   </div>
+
+                  <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(154,103,53,0.2)' }}>
+                    <p style={{ fontSize: '0.75rem', fontWeight: 500, color: '#9A6735', marginBottom: '0.5rem' }}>🎨 Custom Fields (map any extra columns here)</p>
+                    <div style={{ marginBottom: '0.5rem' }}>
+                      <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, color: '#55883B', marginBottom: '0.25rem' }}>Custom Field 1</label>
+                      <select value={rawMapping.custom1} onChange={(e) => saveRawMapping({ custom1: e.target.value })} style={{ width: '100%', padding: '0.5rem', borderRadius: '0.5rem', border: '1px solid #ccc', fontSize: '0.75rem' }}>
+                        <option value="">Select column...</option>
+                        {rawHeaders.map(h => <option key={h} value={h}>{h}</option>)}
+                      </select>
+                    </div>
+                    <div style={{ marginBottom: '0.5rem' }}>
+                      <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, color: '#55883B', marginBottom: '0.25rem' }}>Custom Field 2</label>
+                      <select value={rawMapping.custom2} onChange={(e) => saveRawMapping({ custom2: e.target.value })} style={{ width: '100%', padding: '0.5rem', borderRadius: '0.5rem', border: '1px solid #ccc', fontSize: '0.75rem' }}>
+                        <option value="">Select column...</option>
+                        {rawHeaders.map(h => <option key={h} value={h}>{h}</option>)}
+                      </select>
+                    </div>
+                    <div style={{ marginBottom: '0.5rem' }}>
+                      <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, color: '#55883B', marginBottom: '0.25rem' }}>Custom Field 3</label>
+                      <select value={rawMapping.custom3} onChange={(e) => saveRawMapping({ custom3: e.target.value })} style={{ width: '100%', padding: '0.5rem', borderRadius: '0.5rem', border: '1px solid #ccc', fontSize: '0.75rem' }}>
+                        <option value="">Select column...</option>
+                        {rawHeaders.map(h => <option key={h} value={h}>{h}</option>)}
+                      </select>
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, color: '#55883B', marginBottom: '0.25rem' }}>Custom Field 4</label>
+                      <select value={rawMapping.custom4} onChange={(e) => saveRawMapping({ custom4: e.target.value })} style={{ width: '100%', padding: '0.5rem', borderRadius: '0.5rem', border: '1px solid #ccc', fontSize: '0.75rem' }}>
+                        <option value="">Select column...</option>
+                        {rawHeaders.map(h => <option key={h} value={h}>{h}</option>)}
+                      </select>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -653,39 +703,39 @@ export default function Home() {
           </div>
         )}
 
-        {step === 3 && (
-          <div style={{ background: 'white', borderRadius: '1rem', padding: '2rem', marginTop: '2rem' }}>
-            <h2 style={{ color: '#55883B' }}>✓ Processing Complete!</h2>
-            <p style={{ color: '#9A6735', marginBottom: '1rem' }}>Successfully processed {processedData.length} records.</p>
-            <div style={{ background: '#f5f0e6', padding: '1rem', borderRadius: '0.5rem', maxHeight: '300px', overflow: 'auto', textAlign: 'left', fontSize: '0.75rem' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                <thead>
-                  <tr style={{ borderBottom: '1px solid #ddd' }}>
-                    <th style={{ textAlign: 'left', padding: '0.5rem', color: '#55883B' }}>First Name</th>
-                    <th style={{ textAlign: 'left', padding: '0.5rem', color: '#55883B' }}>Last Name</th>
-                    <th style={{ textAlign: 'left', padding: '0.5rem', color: '#55883B' }}>Phone 1</th>
-                    <th style={{ textAlign: 'left', padding: '0.5rem', color: '#55883B' }}>Email</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {processedData.slice(0, 5).map((row, idx) => (
-                    <tr key={idx} style={{ borderBottom: '1px solid #eee' }}>
-                      <td style={{ padding: '0.5rem' }}>{row["First Name"]}</td>
-                      <td style={{ padding: '0.5rem' }}>{row["Last Name"]}</td>
-                      <td style={{ padding: '0.5rem' }}>{row["Phone 1"]}</td>
-                      <td style={{ padding: '0.5rem' }}>{row["Email"]}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            {processedData.length > 5 && <p style={{ textAlign: 'center', marginTop: '0.5rem', color: '#9A6735' }}>...and {processedData.length - 5} more rows</p>}
-            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '2rem' }}>
-              <button onClick={() => { setStep(2); setProcessedData([]); }} style={{ padding: '0.75rem 2rem', background: '#ccc', border: 'none', borderRadius: '100px', cursor: 'pointer' }}>Process Another File</button>
-              <button onClick={() => exportToCSV(processedData)} style={{ padding: '0.75rem 2rem', background: '#55883B', color: 'white', border: 'none', borderRadius: '100px', cursor: 'pointer' }}>Download CSV Again 📥</button>
-            </div>
-          </div>
-        )}
+{step === 3 && (
+  <div style={{ background: 'white', borderRadius: '1rem', padding: '2rem', marginTop: '2rem' }}>
+    <h2 style={{ color: '#55883B' }}>✓ Processing Complete!</h2>
+    <p style={{ color: '#9A6735', marginBottom: '1rem' }}>Successfully processed {processedData.length} records.</p>
+    <div style={{ background: '#f5f0e6', padding: '1rem', borderRadius: '0.5rem', maxHeight: '300px', overflow: 'auto', textAlign: 'left', fontSize: '0.75rem' }}>
+      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+        <thead>
+          <tr style={{ borderBottom: '1px solid #ddd' }}>
+            <th style={{ textAlign: 'left', padding: '0.5rem', color: '#55883B' }}>First Name</th>
+            <th style={{ textAlign: 'left', padding: '0.5rem', color: '#55883B' }}>Last Name</th>
+            <th style={{ textAlign: 'left', padding: '0.5rem', color: '#55883B' }}>Phone 1</th>
+            <th style={{ textAlign: 'left', padding: '0.5rem', color: '#55883B' }}>Custom 1</th>
+          </tr>
+        </thead>
+        <tbody>
+          {processedData.slice(0, 5).map((row, idx) => (
+            <tr key={idx} style={{ borderBottom: '1px solid #eee' }}>
+              <td style={{ padding: '0.5rem' }}>{row["First Name"]}</td>
+              <td style={{ padding: '0.5rem' }}>{row["Last Name"]}</td>
+              <td style={{ padding: '0.5rem' }}>{row["Phone 1"]}</td>
+              <td style={{ padding: '0.5rem' }}>{row["Custom 1"]}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    {processedData.length > 5 && <p style={{ textAlign: 'center', marginTop: '0.5rem', color: '#9A6735' }}>...and {processedData.length - 5} more rows</p>}
+    <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '2rem' }}>
+      <button onClick={() => { setStep(2); setProcessedData([]); }} style={{ padding: '0.75rem 2rem', background: '#ccc', border: 'none', borderRadius: '100px', cursor: 'pointer' }}>Process Another File</button>
+      <button onClick={() => exportToCSV(processedData)} style={{ padding: '0.75rem 2rem', background: '#55883B', color: 'white', border: 'none', borderRadius: '100px', cursor: 'pointer' }}>Download CSV Again 📥</button>
+    </div>
+  </div>
+)}
       </div>
     </div>
   );
