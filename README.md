@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# The Data Zipper
 
-## Getting Started
+Transform and merge your property data with skip-traced phone numbers for Outbound IQ.
 
-First, run the development server:
+## Live Demo
+
+Once deployed, access the app at: `https://data-zipper.vercel.app`
+
+## Features
+
+- 📊 Upload Raw Data (CSV or Excel files)
+- 📱 Upload BatchData Phone File (CSV)
+- 🔄 Dynamic Column Mapping (saved automatically in your browser)
+- 📞 Smart Phone Prioritization (Mobile numbers first, then landlines)
+- 📧 Email extraction from BatchData
+- 🏠 Complete address building (or use pre-built SitusFullStreetAddress)
+- 🔍 Optional filtering (Equals, Contains, Does Not Equal, etc.)
+- 📥 One-click export to Outbound IQ format
+
+## Output Format
+
+The app produces a CSV with these 16 columns:
+
+| Column | Description |
+|--------|-------------|
+| First Name | From raw data |
+| Last Name | From raw data |
+| Address | Built from components or pre-built |
+| City | From raw data |
+| State | From raw data |
+| Zip | From raw data |
+| Phone 1 | Best mobile number (formatted) |
+| Email | From BatchData |
+| Phone 2 | Same as Phone 1 (for SMS) |
+| DOB | Date of Birth (if available) |
+| FICO | Credit score (if available) |
+| Loan Bal | Loan amount (if available) |
+| Estimated | Estimated property value (if available) |
+| Loan Type | Loan type code (if available) |
+| Sep | Empty placeholder |
+| sms_v1.xml | Empty placeholder |
+
+Phone numbers are formatted as `(XXX) XXX-XXXX`.
+
+## How to Use
+
+1. **Upload Files** - Select your Raw Data file and BatchData phone file
+2. **Map Columns** - Use dropdowns to match your columns to the required fields (saved automatically)
+3. **Filter (Optional)** - Add a simple rule like "State = CA" or "Zip = 90210"
+4. **Process & Download** - Click the button and your CSV downloads instantly
+
+## Privacy
+
+100% client-side. Your data never leaves your computer. No backend, no database, no API calls.
+
+## Tech Stack
+
+- Next.js 15 (React)
+- TypeScript
+- PapaParse (CSV parsing)
+- SheetJS (Excel parsing)
+
+## Development
+
+To run locally:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
