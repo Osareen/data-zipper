@@ -53,20 +53,20 @@ interface FilterRule {
 }
 
 interface ProcessedRow {
-  first_name: string;
-  last_name: string;
-  street: string;
-  city: string;
-  state: string;
-  zip: string;
-  number1: string;
-  Email: string;
-  number2: string;
-  number3: string;
-  DOB: string;
-  FICO: string;
+  "First Name": string;
+  "Last Name": string;
+  "Address": string;
+  "City": string;
+  "State": string;
+  "Zip": string;
+  "number1": string;
+  "Email": string;
+  "number2": string;
+  "number3": string;
+  "DOB": string;
+  "FICO": string;
   "Loan Value": string;
-  Estimated: string;
+  "Estimated": string;
   "Loan Type": string;
   "Custom 1": string;
   "Custom 2": string;
@@ -78,8 +78,8 @@ interface ProcessedRow {
   "Custom 8": string;
   "Custom 9": string;
   "Custom 10": string;
-  Sep: string;
-  sms_v1_xml: string;
+  "Sep": string;
+  "sms_v1.xml": string;
 }
 
 const getValue = (record: Record<string, string>, key: string): string => {
@@ -379,20 +379,20 @@ export default function Home() {
         const formattedNumber3 = formatPhone(thirdMobile);
         
         return {
-          first_name: rawFirstName,
-          last_name: rawLastName,
-          street: fullStreet,
-          city: city,
-          state: state,
-          zip: zip,
-          number1: formattedNumber1,
-          Email: email,
-          number2: formattedNumber2,
-          number3: formattedNumber3,
-          DOB: dob,
-          FICO: fico,
+          "First Name": rawFirstName,
+          "Last Name": rawLastName,
+          "Address": fullStreet,
+          "City": city,
+          "State": state,
+          "Zip": zip,
+          "number1": formattedNumber1,
+          "Email": email,
+          "number2": formattedNumber2,
+          "number3": formattedNumber3,
+          "DOB": dob,
+          "FICO": fico,
           "Loan Value": loanValue,
-          Estimated: estimated,
+          "Estimated": estimated,
           "Loan Type": loanType,
           "Custom 1": custom1,
           "Custom 2": custom2,
@@ -404,8 +404,8 @@ export default function Home() {
           "Custom 8": custom8,
           "Custom 9": custom9,
           "Custom 10": custom10,
-          Sep: "",
-          sms_v1_xml: ""
+          "Sep": "",
+          "sms_v1.xml": ""
         };
       });
       
@@ -714,39 +714,41 @@ export default function Home() {
           </div>
         )}
 
-{step === 3 && (
-  <div style={{ background: 'white', borderRadius: '1rem', padding: '2rem', marginTop: '2rem' }}>
-    <h2 style={{ color: '#55883B' }}>✓ Processing Complete!</h2>
-    <p style={{ color: '#9A6735', marginBottom: '1rem' }}>Successfully processed {processedData.length} records.</p>
-    <div style={{ background: '#f5f0e6', padding: '1rem', borderRadius: '0.5rem', maxHeight: '300px', overflow: 'auto', textAlign: 'left', fontSize: '0.75rem' }}>
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-        <thead>
-          <tr style={{ borderBottom: '1px solid #ddd' }}>
-            <th style={{ textAlign: 'left', padding: '0.5rem', color: '#55883B' }}>First Name</th>
-            <th style={{ textAlign: 'left', padding: '0.5rem', color: '#55883B' }}>Last Name</th>
-            <th style={{ textAlign: 'left', padding: '0.5rem', color: '#55883B' }}>number1</th>
-            <th style={{ textAlign: 'left', padding: '0.5rem', color: '#55883B' }}>Email</th>
-          </tr>
-        </thead>
-        <tbody>
-          {processedData.slice(0, 5).map((row, idx) => (
-            <tr key={idx} style={{ borderBottom: '1px solid #eee' }}>
-              <td style={{ padding: '0.5rem' }}>{row.first_name}</td>
-              <td style={{ padding: '0.5rem' }}>{row.last_name}</td>
-              <td style={{ padding: '0.5rem' }}>{row.number1}</td>
-              <td style={{ padding: '0.5rem' }}>{row.Email}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-    {processedData.length > 5 && <p style={{ textAlign: 'center', marginTop: '0.5rem', color: '#9A6735' }}>...and {processedData.length - 5} more rows</p>}
-    <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '2rem' }}>
-      <button onClick={() => { setStep(2); setProcessedData([]); }} style={{ padding: '0.75rem 2rem', background: '#ccc', border: 'none', borderRadius: '100px', cursor: 'pointer' }}>Process Another File</button>
-      <button onClick={() => exportToCSV(processedData)} style={{ padding: '0.75rem 2rem', background: '#55883B', color: 'white', border: 'none', borderRadius: '100px', cursor: 'pointer' }}>Download CSV Again 📥</button>
-    </div>
-  </div>
-)}
+        {step === 3 && (
+          <div style={{ background: 'white', borderRadius: '1rem', padding: '2rem', marginTop: '2rem' }}>
+            <h2 style={{ color: '#55883B' }}>✓ Processing Complete!</h2>
+            <p style={{ color: '#9A6735', marginBottom: '1rem' }}>Successfully processed {processedData.length} records.</p>
+            <div style={{ background: '#f5f0e6', padding: '1rem', borderRadius: '0.5rem', maxHeight: '300px', overflow: 'auto', textAlign: 'left', fontSize: '0.75rem' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <thead>
+                  <tr style={{ borderBottom: '1px solid #ddd' }}>
+                    <th style={{ textAlign: 'left', padding: '0.5rem', color: '#55883B' }}>First Name</th>
+                    <th style={{ textAlign: 'left', padding: '0.5rem', color: '#55883B' }}>Last Name</th>
+                    <th style={{ textAlign: 'left', padding: '0.5rem', color: '#55883B' }}>number1</th>
+                    <th style={{ textAlign: 'left', padding: '0.5rem', color: '#55883B' }}>Email</th>
+                    <th style={{ textAlign: 'left', padding: '0.5rem', color: '#55883B' }}>number2</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {processedData.slice(0, 5).map((row, idx) => (
+                    <tr key={idx} style={{ borderBottom: '1px solid #eee' }}>
+                      <td style={{ padding: '0.5rem' }}>{row["First Name"]}</td>
+                      <td style={{ padding: '0.5rem' }}>{row["Last Name"]}</td>
+                      <td style={{ padding: '0.5rem' }}>{row.number1}</td>
+                      <td style={{ padding: '0.5rem' }}>{row.Email}</td>
+                      <td style={{ padding: '0.5rem' }}>{row.number2}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {processedData.length > 5 && <p style={{ textAlign: 'center', marginTop: '0.5rem', color: '#9A6735' }}>...and {processedData.length - 5} more rows</p>}
+            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '2rem' }}>
+              <button onClick={() => { setStep(2); setProcessedData([]); }} style={{ padding: '0.75rem 2rem', background: '#ccc', border: 'none', borderRadius: '100px', cursor: 'pointer' }}>Process Another File</button>
+              <button onClick={() => exportToCSV(processedData)} style={{ padding: '0.75rem 2rem', background: '#55883B', color: 'white', border: 'none', borderRadius: '100px', cursor: 'pointer' }}>Download CSV Again 📥</button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
