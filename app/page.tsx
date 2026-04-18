@@ -86,9 +86,23 @@ const getValue = (record: Record<string, string>, key: string): string => {
   return key && record[key] ? record[key] : '';
 };
 
+// Helper function to validate if a string is actually a phone number (not an email)
+const isValidPhone = (value: string): boolean => {
+  if (!value) return false;
+  // Check if it contains @ symbol (email) - reject immediately
+  if (value.includes('@')) return false;
+  // Remove all non-digit characters
+  const digits = value.replace(/\D/g, '');
+  // Valid phone should have 10-11 digits (US numbers)
+  // Also reject if it's too short (like "01" or "016")
+  return digits.length >= 10 && digits.length <= 11;
+};
+
 // Helper function to format phone number as (XXX) XXX-XXXX
 const formatPhone = (phone: string): string => {
   if (!phone) return '';
+  if (!isValidPhone(phone)) return ''; // Return empty for invalid phones
+  
   const phoneStr = String(phone).replace(/\D/g, '');
   if (phoneStr.length >= 10) {
     const last10 = phoneStr.slice(-10);
@@ -97,8 +111,10 @@ const formatPhone = (phone: string): string => {
     const lineNumber = last10.slice(6, 10);
     return `(${areaCode}) ${prefix}-${lineNumber}`;
   }
-  return phone;
+  return '';
 };
+
+
 
 export default function Home() {
   const [rawFile, setRawFile] = useState<File | null>(null);
@@ -281,7 +297,9 @@ export default function Home() {
             if (unitType && unitId) fullStreet += ` ${unitType} ${unitId}`;
             fullStreet = fullStreet.trim();
           }
-          
+
+        
+
           const cityValue = getValue(row, rawMapping.city);
           const stateValue = getValue(row, rawMapping.state);
           let zipValue = getValue(row, rawMapping.zip);
@@ -317,7 +335,14 @@ export default function Home() {
           const numField = phoneMapping[`phone${i}` as keyof PhoneMapping] as string;
           const typeField = phoneMapping[`phoneType${i}` as keyof PhoneMapping] as string;
           if (numField && row[numField]) {
-            phones.push({ number: row[numField], type: typeField ? (row[typeField] || '').toLowerCase() : '' });
+            const phoneNumber = row[numField];
+            // Only add if it's a valid phone (not email)
+            if (isValidPhone(phoneNumber)) {
+              phones.push({ 
+                number: phoneNumber, 
+                type: typeField ? (row[typeField] || '').toLowerCase() : '' 
+              });
+            }
           }
         }
         const mobiles = phones.filter(p => p.type.includes('mobile'));
@@ -353,7 +378,7 @@ export default function Home() {
         });
         
         const phones = phoneMatch?.bestPhones || [];
-        const bestMobile = phones.find(p => p.type.includes('mobile'))?.number || phones[0]?.number || '';
+        const bestMobile = phones[0]?.number || '';
         const secondMobile = phones[1]?.number || '';
         const thirdMobile = phones[2]?.number || '';
         const email = phoneMatch?.email || '';
@@ -374,9 +399,15 @@ export default function Home() {
         const custom9 = getValue(row, rawMapping.custom9);
         const custom10 = getValue(row, rawMapping.custom10);
         
+        // Format phones - will return empty string if invalid
         const formattedNumber1 = formatPhone(bestMobile);
         const formattedNumber2 = formatPhone(secondMobile);
         const formattedNumber3 = formatPhone(thirdMobile);
+        
+        // Debug logging to see what's being placed
+        if (bestMobile && !formattedNumber1) {
+          console.warn('Invalid phone rejected:', bestMobile);
+        }
         
         return {
           "First Name": rawFirstName,
